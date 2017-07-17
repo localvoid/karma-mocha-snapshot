@@ -1,0 +1,31 @@
+{
+  "name": "karma-mocha-snapshot",
+  "version": "0.1.0",
+  "main": "lib/index.js",
+  "description": "Karma plugin for snapshot testing with mocha and chai.",
+  "license": "MIT",
+  "author": {
+    "name": "Boris Kaul",
+    "email": "localvoid@gmail.com",
+    "url": "https://github.com/localvoid"
+  },
+  "keywords": [
+    "karma-plugin",
+    "karma-adapter",
+    "mocha",
+    "chai",
+    "snapshot"
+  ],
+  "homepage": "https://github.com/localvoid/karma-mocha-snapshot",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/localvoid/karma-mocha-snapshot"
+  },
+  "bugs": {
+    "url": "https://github.com/localvoid/karma-mocha-snapshot/issues"
+  },
+  "github": "https://github.com/localvoid/karma-mocha-snapshot",
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {}
+}
