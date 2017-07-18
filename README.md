@@ -1,25 +1,44 @@
-# Karma Plugin for Snapshot Testing with Mocha and Chai
+# Karma Plugin for Snapshot Testing with Mocha
 
 ## Usage Example
 
 ```sh
-$ npm install karma-snapshot karma-mocha karma-chai karma-mocha-snapshot mocha chai --save-dev
+$ npm install karma karma-webpack karma-sourcemap-loader karma-snapshot karma-mocha \
+              karma-mocha-snapshot mocha chai --save-dev
 ```
 
 Karma configuration: 
 
 ```js
 // karma.conf.js
+const webpack = require("webpack");
+
 module.exports = function (config) {
   config.set({
     browsers: ["ChromeHeadless"],
-    frameworks: ["mocha", "chai", "snapshot", "mocha-snapshot"],
+    frameworks: ["mocha", "snapshot", "mocha-snapshot"],
     reporters: ["mocha"],
-
-    files: ["__tests__/*.js"],
+    preprocessors: { "__tests__/index.js": ["webpack", "sourcemap"] },
+    files: ["__tests__/index.js"],
 
     colors: true,
     autoWatch: true,
+
+    webpack: {
+      plugins: [
+        new webpack.SourceMapDevToolPlugin({
+          test: /\.js$/,
+        }),
+      ],
+      performance: {
+        hints: false
+      },
+    },
+
+    webpackMiddleware: {
+      stats: "errors-only",
+      noInfo: true
+    },
 
     snapshot: {
       update: !!process.env.UPDATE,
@@ -42,7 +61,11 @@ module.exports = function (config) {
 Test file:
 
 ```js
-// __tests__/hello.js
+// __tests__/index.js
+import { use, expect } from "chai";
+import { matchSnapshot } from "chai-snapshot";
+use(matchSnapshot);
+
 it("check snapshot", () => {
   expect("Hello World").to.matchSnapshot();
 });
