@@ -4,7 +4,7 @@
 
 ```sh
 $ npm install karma karma-webpack karma-sourcemap-loader karma-snapshot karma-mocha \
-              karma-mocha-snapshot mocha chai --save-dev
+              karma-mocha-snapshot mocha chai chai-karma-snapshot --save-dev
 ```
 
 Karma configuration: 
@@ -63,7 +63,7 @@ Test file:
 ```js
 // __tests__/index.js
 import { use, expect } from "chai";
-import { matchSnapshot } from "chai-snapshot";
+import { matchSnapshot } from "chai-karma-snapshot";
 use(matchSnapshot);
 
 it("check snapshot", () => {
