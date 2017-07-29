@@ -18,6 +18,11 @@ Snapshots are stored in a [Markdown](https://en.wikipedia.org/wiki/Markdown) for
 ```
 ````
 
+## Snapshot File Path
+
+Snapshot file path is extracted from the name of the root suit cases and stored alongside with a tested files in a
+`__snapshots__` directory.
+
 ## Usage Example
 
 ```sh
@@ -41,7 +46,10 @@ module.exports = function (config) {
       "**/__snapshot__/**/*.md": ["snapshot"],
       "__tests__/index.js": ["webpack", "sourcemap"]
     },
-    files: ["__tests__/index.js"],
+    files: [
+      "**/__snapshots__/**/*.md",
+      "__tests__/index.js"
+    ],
 
     colors: true,
     autoWatch: true,
@@ -80,16 +88,29 @@ module.exports = function (config) {
 };
 ```
 
+Source file:
+
+```js
+// src/index.js
+
+export function test() {
+  return "Snapshot Test";
+}
+```
+
 Test file:
 
 ```js
 // __tests__/index.js
 import { use, expect } from "chai";
 import { matchSnapshot } from "chai-karma-snapshot";
+import { test } from "../src/index.js";
 use(matchSnapshot);
 
-it("check snapshot", () => {
-  expect("Hello World").to.matchSnapshot();
+describe("src/index.js", () => {
+  it("check snapshot", () => {
+    expect(test()).to.matchSnapshot();
+  });
 });
 ```
 
