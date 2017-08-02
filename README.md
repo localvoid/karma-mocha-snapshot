@@ -2,14 +2,19 @@
 
 ## Snapshot Format
 
-Snapshots are stored in a [Markdown](https://en.wikipedia.org/wiki/Markdown) format to improve readability.
+Snapshot can be stored in different formats. Right now there are two formats supported: `md` and `indented-md`.
+
+### Markdown Format
+
+This format is preferred when you specify language for code blocks in an assertion plugin. With this format, code
+editors will automatically highlight syntax of code blocks.
 
 ````md
-## `Root Suite`
+# `src/html.js`
 
-##   `Sub Suite`
+## `Sub Suite`
 
-####     `HTML Snapshot`
+####   `HTML Snapshot`
 
 ```html
 <div>
@@ -18,10 +23,26 @@ Snapshots are stored in a [Markdown](https://en.wikipedia.org/wiki/Markdown) for
 ```
 ````
 
+### Indented Markdown Format
+
+```md
+# `src/html.js`
+
+## `Sub Suite`
+
+####   `HTML Snapshot`
+
+    <div>
+      <span />
+    </div>
+```
+
 ## Snapshot File Path
 
 Snapshot file path is extracted from the name of the root suit cases and stored alongside with a tested files in a
 `__snapshots__` directory.
+
+Snapshot file path can be changed by providing a custom `pathResolver` in snapshot config.
 
 ## Usage Example
 
@@ -43,7 +64,7 @@ module.exports = function (config) {
     frameworks: ["mocha", "snapshot", "mocha-snapshot"],
     reporters: ["mocha"],
     preprocessors: {
-      "**/__snapshot__/**/*.md": ["snapshot"],
+      "**/__snapshots__/**/*.md": ["snapshot"],
       "__tests__/index.js": ["webpack", "sourcemap"]
     },
     files: [
@@ -55,11 +76,7 @@ module.exports = function (config) {
     autoWatch: true,
 
     webpack: {
-      plugins: [
-        new webpack.SourceMapDevToolPlugin({
-          test: /\.js$/,
-        }),
-      ],
+      devtool: "inline-source-map",
       performance: {
         hints: false
       },
